@@ -222,7 +222,7 @@ def main():
     image_path = os.path.join(IMAGE_DIR, f"{today}.png")
     image_url = (
         f"https://raw.githubusercontent.com/{GH_OWNER}/{GH_REPO}/"
-        f"{GH_BRANCH}/{IMAGE_DIR}/{today}.png"
+        f"{GH_BRANCH}/{IMAGE_DIR}/{today}.png?v={int(datetime.datetime.now().timestamp())}"
     )
 
     # ── 캐시 있으면 그대로 재사용 (OpenAI 호출 안 함) ──
