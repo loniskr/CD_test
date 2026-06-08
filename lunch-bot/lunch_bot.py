@@ -106,8 +106,9 @@ def generate_image(menu_items, save_path):
     """밥상 이미지를 생성해 save_path(png)로 저장."""
     menu_str = ", ".join(menu_items)
     prompt = (
-        f"한국 구내식당의 점심 식판 한 상. 메뉴 구성: {menu_str}. "
-        "위에서 내려다본 구도, 자연광, 사실적인 음식 사진 스타일, 깔끔한 배경."
+        f"한국 학교 구내식당의 스테인리스 배식판에 담긴 점심. 메뉴: {menu_str}. "
+        "실제 DSLR로 찍은 음식 사진, 위에서 내려다본 구도, 형광등 아래 식당 분위기, "
+        "사실적인 질감과 윤기. 일러스트나 3D 렌더링이 아닌 실제 사진."
     )
 
     resp = requests.post(
@@ -120,7 +121,7 @@ def generate_image(menu_items, save_path):
             "model": "gpt-image-1",
             "prompt": prompt,
             "size": "1024x1024",
-            "quality": "low",   # 비용 절약 (low/medium/high)
+            "quality": "medium",   # 비용 절약 (low/medium/high)
             "n": 1,
         },
         timeout=120,
