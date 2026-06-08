@@ -1,10 +1,9 @@
 name: Deploy to EC2
 on:
   push:
-    branches: [ main ]      
-  workflow_dispatch:         
-# main에 push될 때만 배포
-# 수동 실행 버튼(테스트용)
+    branches: [ main ]
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,7 +11,7 @@ jobs:
       - name: SSH로 EC2 배포
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/key.pem
+          echo "${{ secrets.EC2_SSH_KEY_PPK }}" > ~/.ssh/key.pem
           chmod 600 ~/.ssh/key.pem
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/key.pem \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
@@ -39,7 +38,7 @@ jobs:
                 ]
               }
             }]
-          }' ${{ secrets.TEAMS_WEBHOOK }}
+          }' "${{ secrets.TEAMS_WEBHOOK }}"
 
       - name: Teams 알림 (실패)
         if: failure()
@@ -53,8 +52,8 @@ jobs:
                 "version": "1.4",
                 "body": [
                   { "type": "TextBlock", "text": "❌ 배포 실패", "weight": "Bolder", "size": "Medium", "color": "Attention" },
-                  { "type": "TextBlock", "text": "배포 중 오류가 발생했습니다. 로그를 확인하세요.", "wrap": true }
+                  { "type": "TextBlock", "text": "배포 중 오류가 발생했습니다.", "wrap": true }
                 ]
               }
             }]
-          }' ${{ secrets.TEAMS_WEBHOOK }}
+          }' "${{ secrets.TEAMS_WEBHOOK }}"
