@@ -10,17 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: SSH로 EC2 배포
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY_PPK }}
-          script: |
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/key.pem
+          chmod 600 ~/.ssh/key.pem
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/key.pem \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
             cd /var/www/mysite
             git pull origin main
             sudo nginx -t
             sudo systemctl reload nginx
+          EOF
 
       - name: Teams 알림 (성공)
         if: success()
