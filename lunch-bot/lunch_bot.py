@@ -106,9 +106,13 @@ def generate_image(menu_items, save_path):
     """밥상 이미지를 생성해 save_path(png)로 저장."""
     menu_str = ", ".join(menu_items)
     prompt = (
-        f"한국 학교 구내식당의 스테인리스 배식판에 담긴 점심. 메뉴: {menu_str}. "
-        "실제 DSLR로 찍은 음식 사진, 위에서 내려다본 구도, 형광등 아래 식당 분위기, "
-        "사실적인 질감과 윤기. 일러스트나 3D 렌더링이 아닌 실제 사진."
+        f"한국 학교 급식 스테인리스 6칸 배식판을 바로 위에서 내려다본 실제 사진. "
+        "배식판 구조: 아래쪽에 큰 칸 2개(왼쪽 밥칸, 오른쪽 국칸), "
+        "그 위 좌우에 깊은 반찬칸 1개씩, 가운데에 얕은 반찬칸 2개. "
+        f"각 칸에 담긴 음식: {menu_str}. "
+        "왼쪽 아래 큰 칸에는 밥, 오른쪽 아래 큰 칸에는 국물 요리. "
+        "반찬은 칸마다 색과 형태가 분명히 다르게, 김치는 붉고 매콤한 색으로 구분. "
+        "형광등 아래 급식실 분위기, 실제 DSLR 음식 사진, 일러스트나 3D 렌더링 아님."
     )
 
     resp = requests.post(
@@ -121,7 +125,7 @@ def generate_image(menu_items, save_path):
             "model": "gpt-image-1",
             "prompt": prompt,
             "size": "1024x1024",
-            "quality": "medium",   # 비용 절약 (low/medium/high)
+            "quality": "high",   # 비용 절약 (low/medium/high)
             "n": 1,
         },
         timeout=120,
