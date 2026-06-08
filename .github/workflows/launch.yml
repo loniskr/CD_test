@@ -23,4 +23,4 @@ jobs:
       - name: 점심 메뉴 알림
         env:
           TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK }}
-        run: python lunch_bot.py
+        run: python lunch-bot/lunch_bot.py
